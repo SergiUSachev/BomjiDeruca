@@ -58,6 +58,7 @@ namespace BomjiDeruca
 
 	class Warrior : Fighter
 	{
+		public Warrior(string name, int maxHealth, int damage, int armor)
 		public override void ShowInfo()
 		{
 			Console.WriteLine($"{GetType().Name}, {_name}");
