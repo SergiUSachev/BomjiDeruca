@@ -22,7 +22,6 @@ namespace BomjiDeruca
 	abstract class Fighter
 	{
 		protected string Name;
-		protected int Health;
 		protected int MaxHealth;
 		protected int Damage;
 		protected int Mana;
@@ -33,7 +32,6 @@ namespace BomjiDeruca
 		{
 			Name=name;
 			MaxHealth=maxHealth;
-			Health = maxHealth;
 			Damage=damage;
 			MaxMana=maxMana;
 			Mana = maxMana;
@@ -58,17 +56,19 @@ namespace BomjiDeruca
 
 	class Warrior : Fighter
 	{
-
 		public Warrior(string name, int maxHealth, int damage, int armor)
 			:base(name, maxHealth, damage, armor)
 		{
-
+			maxHealth = 150;
+			MaxHealth = maxHealth;
 		}
+
+		private int Health;
 
 
 		public override void ShowInfo()
 		{
-			Console.WriteLine($"{GetType().Name}, {Warrior.name}");
+			Console.WriteLine($"{GetType().Name}, {Name}, {} of {MaxHealth} health");
 		}
 	}
 }
