@@ -15,7 +15,52 @@ namespace BomjiDeruca
 	{
 		static void Main(string[] args)
 		{
-			Console.WriteLine("Hello, World!");
+			
+		}
+	}
+
+	abstract class Fighter
+	{
+		private string _name;
+		private int _health;
+		private int _maxHealth;
+		private int _damage;
+		private int _mana;
+		private int _maxMana;
+		private int _armor;
+
+		public Fighter(string name, int maxHealth = 100, int damage = 10, int maxMana = 0, int armor = 0)
+		{
+			_name=name;
+			_maxHealth=maxHealth;
+			_health = maxHealth;
+			_damage=damage;
+			_maxMana=maxMana;
+			_mana = maxMana;
+			_armor=armor;
+		}
+
+		public void ShowStats()
+		{
+			Console.WriteLine($"Имя: {_name}, Здоровье: {_maxHealth}, Урон: {_damage}," +
+				$" Мана: {_mana}, Защита: {_armor} ");
+		}
+
+		abstract public void ShowInfo();
+
+		abstract public void DoHit();
+
+		abstract public void TakeHit();
+
+		abstract public void Skill();
+	}
+
+
+	class Warrior : Fighter
+	{
+		public override void ShowInfo()
+		{
+			Console.WriteLine($"{GetType().Name}, {_name}");
 		}
 	}
 }
