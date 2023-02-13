@@ -63,9 +63,11 @@ namespace BomjiDeruca
 		{
 
 		}
+
+
 		public override void ShowInfo()
 		{
-			Console.WriteLine($"{GetType().Name}, {Name}");
+			Console.WriteLine($"{GetType().Name}, {Warrior.name}");
 		}
 	}
 }
