@@ -21,29 +21,29 @@ namespace BomjiDeruca
 
 	abstract class Fighter
 	{
-		private string _name;
-		private int _health;
-		private int _maxHealth;
-		private int _damage;
-		private int _mana;
-		private int _maxMana;
-		private int _armor;
+		protected string Name;
+		protected int Health;
+		protected int MaxHealth;
+		protected int Damage;
+		protected int Mana;
+		protected int MaxMana;
+		protected int Armor;
 
 		public Fighter(string name, int maxHealth = 100, int damage = 10, int maxMana = 0, int armor = 0)
 		{
-			_name=name;
-			_maxHealth=maxHealth;
-			_health = maxHealth;
-			_damage=damage;
-			_maxMana=maxMana;
-			_mana = maxMana;
-			_armor=armor;
+			Name=name;
+			MaxHealth=maxHealth;
+			Health = maxHealth;
+			Damage=damage;
+			MaxMana=maxMana;
+			Mana = maxMana;
+			Armor=armor;
 		}
 
 		public void ShowStats()
 		{
-			Console.WriteLine($"Имя: {_name}, Здоровье: {_maxHealth}, Урон: {_damage}," +
-				$" Мана: {_mana}, Защита: {_armor} ");
+			Console.WriteLine($"Имя: {Name}, Здоровье: {MaxHealth}, Урон: {Damage}," +
+				$" Мана: {Mana}, Защита: {Armor} ");
 		}
 
 		abstract public void ShowInfo();
@@ -58,10 +58,10 @@ namespace BomjiDeruca
 
 	class Warrior : Fighter
 	{
-		public Warrior(string name, int maxHealth, int damage, int armor)
+		public Warrior(string name, int maxHealth, int damage, int armor: base())
 		public override void ShowInfo()
 		{
-			Console.WriteLine($"{GetType().Name}, {_name}");
+			Console.WriteLine($"{GetType().Name}, {Name}");
 		}
 	}
 }
