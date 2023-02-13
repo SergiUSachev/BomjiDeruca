@@ -13,34 +13,47 @@ using System;
 
 abstract class Fighter
 {
-	public string Name { get; }
-	public int HP { get; set; }
-	public int Attack { get; }
-	public int Defense { get; }
+	protected string name;
+	protected int hp;
+	protected int attack;
+	protected int defense;
 
 	public Fighter(string name, int hp, int attack, int defense)
 	{
-		Name = name;
-		HP = hp;
-		Attack = attack;
-		Defense = defense;
+		this.name = name;
+		this.hp = hp;
+		this.attack = attack;
+		this.defense = defense;
 	}
 
 	public abstract void SpecialAttack(Fighter other);
+
+	public void TakeDamage(int damage)
+	{
+		hp -= damage;
+		if (hp < 0)
+		{
+			hp = 0;
+		}
+	}
+
+	public string Name { get { return name; } }
+	public int HP { get { return hp; } private set { hp = value; } }
+	public int Attack { get { return attack; } }
+	public int Defense { get { return defense; } }
 }
 
 class Knight : Fighter
 {
 	public Knight(string name, int hp, int attack, int defense) : base(name, hp, attack, defense)
 	{
-
 	}
 
 	public override void SpecialAttack(Fighter other)
 	{
-		int damage = Attack * 2 - other.Defense;
-		other.HP -= damage;
-		Console.WriteLine($"{Name} uses Double Strike and deals {damage} damage to {other.Name}.");
+		int damage = attack * 2 - other.Defense;
+		other.TakeDamage(damage);
+		Console.WriteLine($"{name} uses Double Strike and deals {damage} damage to {other.Name}.");
 	}
 }
 
@@ -48,14 +61,13 @@ class Archer : Fighter
 {
 	public Archer(string name, int hp, int attack, int defense) : base(name, hp, attack, defense)
 	{
-
 	}
 
 	public override void SpecialAttack(Fighter other)
 	{
-		int damage = Attack + 3;
-		other.HP -= damage;
-		Console.WriteLine($"{Name} uses Poison Shot and deals {damage} damage to {other.Name}.");
+		int damage = attack + 3;
+		other.TakeDamage(damage);
+		Console.WriteLine($"{name} uses Poison Shot and deals {damage} damage to {other.Name}.");
 	}
 }
 
@@ -63,13 +75,13 @@ class Mage : Fighter
 {
 	public Mage(string name, int hp, int attack, int defense) : base(name, hp, attack, defense)
 	{
-
 	}
 
 	public override void SpecialAttack(Fighter other)
 	{
-		int damage = Attack * 3 - other.Defense;
-		other.HP -= damage;
-		Console.WriteLine($"{Name} uses Fireball and deals {damage} damage to {other.Name}.");
+		int damage = attack * 3 - other.Defense;
+		other.TakeDamage(damage);
+		Console.WriteLine($"{name} uses Fireball and deals {damage} damage to {other.Name}.");
 	}
 }
+
