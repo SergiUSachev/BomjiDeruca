@@ -33,6 +33,7 @@ class Knight : Fighter
 {
 	public Knight(string name, int hp, int attack, int defense) : base(name, hp, attack, defense)
 	{
+
 	}
 
 	public override void SpecialAttack(Fighter other)
@@ -47,6 +48,7 @@ class Archer : Fighter
 {
 	public Archer(string name, int hp, int attack, int defense) : base(name, hp, attack, defense)
 	{
+
 	}
 
 	public override void SpecialAttack(Fighter other)
@@ -61,6 +63,7 @@ class Mage : Fighter
 {
 	public Mage(string name, int hp, int attack, int defense) : base(name, hp, attack, defense)
 	{
+
 	}
 
 	public override void SpecialAttack(Fighter other)
