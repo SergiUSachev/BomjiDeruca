@@ -21,13 +21,13 @@ namespace BomjiDeruca
 
 	abstract class Fighter
 	{
-		private string _name;
-		private int _health;
-		private int _maxHealth;
-		private int _damage;
-		private int _mana;
-		private int _maxMana;
-		private int _armor;
+		protected string _name;
+		protected int _health;
+		protected int _maxHealth;
+		protected int _damage;
+		protected int _mana;
+		protected int _maxMana;
+		protected int _armor;
 
 		public Fighter(string name, int maxHealth = 100, int damage = 10, int maxMana = 0, int armor = 0)
 		{
@@ -58,6 +58,10 @@ namespace BomjiDeruca
 
 	class Warrior : Fighter
 	{
+		public Warrior(string name)
+		{
+			name = this._name;
+		}
 		public override void ShowInfo()
 		{
 			Console.WriteLine($"{GetType().Name}, {_name}");
