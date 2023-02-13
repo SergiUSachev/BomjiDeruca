@@ -58,7 +58,11 @@ namespace BomjiDeruca
 
 	class Warrior : Fighter
 	{
-		public Warrior(string name, int maxHealth, int damage, int armor: base())
+		public Warrior(string name, int maxHealth, int damage, int armor)
+			:base(name, maxHealth, damage, armor)
+		{
+
+		}
 		public override void ShowInfo()
 		{
 			Console.WriteLine($"{GetType().Name}, {Name}");
