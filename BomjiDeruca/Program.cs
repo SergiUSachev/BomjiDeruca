@@ -65,7 +65,6 @@ namespace BomjiDeruca
 
 		private int Health;
 
-
 		public override void ShowInfo()
 		{
 			Console.WriteLine($"{GetType().Name}, {Name}, {} of {MaxHealth} health");
