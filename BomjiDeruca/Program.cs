@@ -19,7 +19,23 @@ namespace BomjiDeruca
 	{
 		static void Main(string[] args)
 		{
-			
+			Fighter[] fighters =
+			{
+				new Warrior("Ган", 150, 25, 5),
+				new Mage("Дон", 100, 10, 5),
+				new Knight("Лорд Ы", 120, 20, 5),
+				new Rogue("Мистер Эти", 100, 20, 1),
+				new Archer("Фай", 100, 15, 5),
+				new Pedestrian("Терс", 100, 0, 0)
+			};
+
+			int fighterNumber;
+
+			for (int i = 0; i < fighters.Length; i++)
+			{
+				Console.WriteLine(i+1 + " ");
+				fighters[i].ShowStats();
+			}
 		}
 	}
 
@@ -38,14 +54,12 @@ namespace BomjiDeruca
 			this.armor = armor;
 		}
 
-
 		public string Name { get { return name; } private set { name = value; } }
 		public int HP { get { return hp; } private set { hp = value; } }
 		public int Damage { get { return damage; } private set { damage = value; } }
 		public int Armor { get { return armor; } private set { armor = value; } }
 
 		abstract public void ShowStats();
-		//Console.WriteLine($"Имя: {Name}, Здоровье: {MaxHealth}, Урон: {Damage}," + " Защита: {Armor} ");
 
 		abstract public void ShowInfo();
 
@@ -66,7 +80,6 @@ namespace BomjiDeruca
 		abstract public void SpecialSkill(Fighter other);
 
 	}
-
 
 	class Warrior : Fighter
 	{
@@ -110,9 +123,9 @@ namespace BomjiDeruca
 		private const int FireballDamage = 50;
 		private const int FireballManaCost = 50;
 
-		private int _mana;
+		private int _mana = 100;
 
-		public Mage(string name, int hp, int damage, int armor, int _mana) : base(name, hp, damage, armor)
+		public Mage(string name, int hp, int damage, int armor) : base(name, hp, damage, armor)
 		{
 		}
 
@@ -126,6 +139,7 @@ namespace BomjiDeruca
 			{
 				otherFighter.TakeHit(Damage);
 			}
+
 			_mana += 10;
 		}
 
@@ -263,8 +277,9 @@ namespace BomjiDeruca
 			"Не бей меня", "Только не это", 
 		};
 
-		public Pedestrian(string name, int hp, int damage, int armor, int _mana) : base(name, hp, damage, armor)
+		public Pedestrian(string name, int hp, int damage, int armor) : base(name, hp, damage, armor)
 		{
+
 		}
 
 		public override void DoHit(Fighter otherFighter)
