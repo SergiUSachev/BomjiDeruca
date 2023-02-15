@@ -9,6 +9,10 @@
 //при получении урона немного себя лечит.Будут новые поля у наследников.
 //У кого-то может быть мана и это только его особенность.
 
+using System.Reflection.Metadata;
+using System.Xml.Linq;
+using System.Xml.Serialization;
+
 namespace BomjiDeruca
 {
 	internal class Program
@@ -21,53 +25,168 @@ namespace BomjiDeruca
 
 	abstract class Fighter
 	{
-		protected string Name;
-		protected int MaxHealth;
-		protected int Damage;
-		protected int Mana;
-		protected int MaxMana;
-		protected int Armor;
+		protected string name;
+		protected int hp;
+		protected int damage;
+		protected int armor;
 
-		public Fighter(string name, int maxHealth = 100, int damage = 10, int maxMana = 0, int armor = 0)
+		public Fighter(string name, int hp, int damage, int armor)
 		{
-			Name=name;
-			MaxHealth=maxHealth;
-			Damage=damage;
-			MaxMana=maxMana;
-			Mana = maxMana;
-			Armor=armor;
+			this.name = name;
+			this.hp = hp;
+			this.damage = damage;
+			this.armor = armor;
 		}
 
-		public void ShowStats()
-		{
-			Console.WriteLine($"Имя: {Name}, Здоровье: {MaxHealth}, Урон: {Damage}," +
-				$" Мана: {Mana}, Защита: {Armor} ");
-		}
+
+		public string Name { get { return name; } private set { name = value; } }
+		public int HP { get { return hp; } private set { hp = value; } }
+		public int Damage { get { return damage; } private set { damage = value; } }
+		public int Armor { get { return armor; } private set { armor = value; } }
+
+
+
+		abstract public void ShowStats();
+		//Console.WriteLine($"Имя: {Name}, Здоровье: {MaxHealth}, Урон: {Damage}," + " Защита: {Armor} ");
 
 		abstract public void ShowInfo();
 
-		abstract public void DoHit();
+		abstract public void DoHit(Fighter other);
 
-		abstract public void TakeHit();
+		public void TakeHit(int damage)
+		{
+			if(damage > armor)
+			{
+				hp = hp - damage;
+			}
+			else
+			{
+				hp -= 1;
+			}
+		}
 
-		abstract public void Skill();
+		abstract public void SpecialSkill(Fighter other);
 	}
 
 
 	class Warrior : Fighter
 	{
-		public Warrior(string name, int maxHealth, int damage, int armor)
-			:base(name, maxHealth, damage, armor)
+		public Warrior(string name, int hp, int attack, int defense) : base(name, hp, attack, defense)
 		{
-			maxHealth = 150;
-			MaxHealth = maxHealth;
 		}
 
-		private int Health;
+		public override void DoHit(Fighter otherFighter)
+		{
+			if(otherFighter.HP < HP/3)
+			{
+				SpecialSkill(otherFighter);
+			}
+			else
+			{
+				otherFighter.TakeHit(Damage);
+			}
+		}
+
+		public override void SpecialSkill(Fighter otherFighter)
+		{
+			Console.WriteLine("Удар превосходства!");
+			Random random = new Random();
+			int RandomNumber = random.Next(1,4);
+			otherFighter.TakeHit(Damage*RandomNumber);
+		}
 
 		public override void ShowInfo()
 		{
-			Console.WriteLine($"{GetType().Name}, {Name}, {} of {MaxHealth} health");
+			Console.WriteLine($"{GetType().Name}, {Name}, Здоровье: {HP}");
+		}
+
+		public override void ShowStats()
+		{
+			Console.WriteLine($"Имя: {Name}, Здоровье: {HP}, Урон: {Damage}, Защита: {Armor} ");
+		}
+	}
+
+	class Mage : Fighter
+	{
+		private const int FireballDamage = 50;
+		private const int FireballManaCost = 50;
+
+		private int _mana;
+
+		public Mage(string name, int hp, int attack, int defense, int _mana) : base(name, hp, attack, defense)
+		{
+		}
+
+		public override void DoHit(Fighter otherFighter)
+		{
+			if (_mana>=FireballManaCost)
+			{
+				SpecialSkill(otherFighter);
+			}
+			else
+			{
+				otherFighter.TakeHit(Damage);
+			}
+			_mana += 10;
+		}
+
+		public override void SpecialSkill(Fighter otherFighter)
+		{
+			Console.WriteLine("Фаирбол!!!");
+			_mana -= 50;
+			otherFighter.TakeHit(FireballDamage);
+		}
+
+		public override void ShowInfo()
+		{
+			Console.WriteLine($"{GetType().Name}, {Name}, Здоровье: {HP}, Мана: {_mana}");
+		}
+
+		public override void ShowStats()
+		{
+			Console.WriteLine($"Имя: {Name}, Здоровье: {HP}, Урон: {Damage}, Мана: {_mana} Защита: {Armor} ");
+		}
+	}
+
+	class Rogue : Fighter
+	{
+		private const int CriticalHitRate = 3;
+
+		private int atackCount = 0;
+
+		public Rogue(string name, int hp, int attack, int defense) : base(name, hp, attack, defense)
+		{
+		}
+
+		public override void DoHit(Fighter otherFighter)
+		{
+			atackCount++;
+
+			if (atackCount % 3 == 0)
+			{
+				SpecialSkill(otherFighter);
+			}
+			else
+			{
+				otherFighter.TakeHit(Damage);
+			}
+		}
+
+		public override void SpecialSkill(Fighter otherFighter)
+		{
+			Console.WriteLine("Сажаю на перо!!!");
+			otherFighter.TakeHit(damage*CriticalHitRate);
+
+		}
+
+		public override void ShowInfo()
+		{
+			Console.WriteLine($"{GetType().Name}, {Name}, Здоровье: {HP}");
+		}
+
+		public override void ShowStats()
+		{
+			Console.WriteLine($"Имя: {Name}, Здоровье: {HP}, Урон: {Damage}, Защита: {Armor} ");
 		}
 	}
 }
