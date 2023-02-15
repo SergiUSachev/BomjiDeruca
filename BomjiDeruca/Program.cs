@@ -44,8 +44,6 @@ namespace BomjiDeruca
 		public int Damage { get { return damage; } private set { damage = value; } }
 		public int Armor { get { return armor; } private set { armor = value; } }
 
-
-
 		abstract public void ShowStats();
 		//Console.WriteLine($"Имя: {Name}, Здоровье: {MaxHealth}, Урон: {Damage}," + " Защита: {Armor} ");
 
@@ -57,7 +55,7 @@ namespace BomjiDeruca
 		{
 			if(damage > armor)
 			{
-				hp = hp - damage;
+				hp = hp - damage + armor;
 			}
 			else
 			{
@@ -66,12 +64,13 @@ namespace BomjiDeruca
 		}
 
 		abstract public void SpecialSkill(Fighter other);
+
 	}
 
 
 	class Warrior : Fighter
 	{
-		public Warrior(string name, int hp, int attack, int defense) : base(name, hp, attack, defense)
+		public Warrior(string name, int hp, int damage, int armor) : base(name, hp, damage, armor)
 		{
 		}
 
@@ -113,7 +112,7 @@ namespace BomjiDeruca
 
 		private int _mana;
 
-		public Mage(string name, int hp, int attack, int defense, int _mana) : base(name, hp, attack, defense)
+		public Mage(string name, int hp, int damage, int armor, int _mana) : base(name, hp, damage, armor)
 		{
 		}
 
@@ -154,29 +153,29 @@ namespace BomjiDeruca
 
 		private int atackCount = 0;
 
-		public Rogue(string name, int hp, int attack, int defense) : base(name, hp, attack, defense)
+		public Rogue(string name, int hp, int damage, int armor) : base(name, hp, damage, armor)
 		{
+
 		}
 
 		public override void DoHit(Fighter otherFighter)
 		{
 			atackCount++;
-
-			if (atackCount % 3 == 0)
+			if (atackCount%3==0)
 			{
 				SpecialSkill(otherFighter);
 			}
 			else
 			{
-				otherFighter.TakeHit(Damage);
+				otherFighter.TakeHit(damage);
 			}
 		}
 
 		public override void SpecialSkill(Fighter otherFighter)
 		{
 			Console.WriteLine("Сажаю на перо!!!");
-			otherFighter.TakeHit(damage*CriticalHitRate);
 
+			otherFighter.TakeHit(damage*CriticalHitRate);
 		}
 
 		public override void ShowInfo()
@@ -189,4 +188,107 @@ namespace BomjiDeruca
 			Console.WriteLine($"Имя: {Name}, Здоровье: {HP}, Урон: {Damage}, Защита: {Armor} ");
 		}
 	}
+
+	class Knight : Fighter
+	{
+		public Knight(string name, int hp, int damage, int armor) : base(name, hp, damage, armor)
+		{
+
+		}
+
+		public override void DoHit(Fighter otherFighter)
+		{
+			SpecialSkill(otherFighter);
+			otherFighter.TakeHit(Damage);
+		}
+
+		public override void SpecialSkill(Fighter otherFighter)
+		{
+			armor += 5;
+			otherFighter.TakeHit(Damage);
+		}
+
+		public override void ShowInfo()
+		{
+			Console.WriteLine($"{GetType().Name}, {Name}, Здоровье: {HP}");
+		}
+
+		public override void ShowStats()
+		{
+			Console.WriteLine($"Имя: {Name}, Здоровье: {HP}, Урон: {Damage}, Защита: {Armor} ");
+		}
+	}
+	class Archer : Fighter
+	{
+		private int atackCount = 0;
+
+		public Archer(string name, int hp, int damage, int armor) : base(name, hp, damage, armor)
+		{
+
+		}
+
+		public override void DoHit(Fighter otherFighter)
+		{
+			atackCount++;
+			SpecialSkill(otherFighter);
+			otherFighter.TakeHit(damage);
+
+		}
+
+		public override void SpecialSkill(Fighter otherFighter)
+		{
+			if (atackCount < 3)
+			{
+				armor = otherFighter.Damage;
+				otherFighter.TakeHit(damage);
+			}
+		}
+
+		public override void ShowInfo()
+		{
+			Console.WriteLine($"{GetType().Name}, {Name}, Здоровье: {HP}");
+		}
+
+		public override void ShowStats()
+		{
+			Console.WriteLine($"Имя: {Name}, Здоровье: {HP}, Урон: {Damage}, Защита: {Armor} ");
+		}
+	}
+
+	class Pedestrian : Fighter
+	{
+		private List<string> _phrases = new List<string>(){
+			"Помогите!", "Я не должен быть здесь!", 
+			"Мне рано умирать", "За что?", "Я просто мимо прохожу!",
+			"Не бей меня", "Только не это", 
+		};
+
+		public Pedestrian(string name, int hp, int damage, int armor, int _mana) : base(name, hp, damage, armor)
+		{
+		}
+
+		public override void DoHit(Fighter otherFighter)
+		{
+			otherFighter.TakeHit(0);
+		}
+
+		public override void SpecialSkill(Fighter otherFighter)
+		{
+			Random random = new Random();
+
+			int randomPhraseNumber = random.Next(0, 7);
+			Console.WriteLine(_phrases[randomPhraseNumber]);
+		}
+
+		public override void ShowInfo()
+		{
+			Console.WriteLine($"{GetType().Name}, {Name}, Здоровье: {HP}");
+		}
+
+		public override void ShowStats()
+		{
+			Console.WriteLine($"Имя: {Name}, Здоровье: {HP}, Урон: {Damage}, Защита: {Armor}");
+		}
+	}
+
 }
