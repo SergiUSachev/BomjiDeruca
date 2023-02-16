@@ -36,6 +36,24 @@ namespace BomjiDeruca
 				Console.WriteLine(i+1 + " ");
 				fighters[i].ShowStats();
 			}
+
+			Console.WriteLine("\nВыберете первого бойца");
+			fighterNumber = Convert.ToInt32(Console.ReadLine())-1;
+			Fighter firstFighter = fighters[fighterNumber];
+
+			Console.WriteLine("\nВыберете второго бойца");
+			fighterNumber = Convert.ToInt32(Console.ReadLine())-1;
+			Fighter secondFighter = fighters[fighterNumber];
+
+			while(firstFighter.HP>0 && secondFighter.HP>0)
+			{
+				firstFighter.DoHit(secondFighter);
+				secondFighter.DoHit(firstFighter);
+
+				firstFighter.ShowInfo();
+				secondFighter.ShowInfo();
+			}
+
 		}
 	}
 
@@ -54,10 +72,53 @@ namespace BomjiDeruca
 			this.armor = armor;
 		}
 
-		public string Name { get { return name; } private set { name = value; } }
-		public int HP { get { return hp; } private set { hp = value; } }
-		public int Damage { get { return damage; } private set { damage = value; } }
-		public int Armor { get { return armor; } private set { armor = value; } }
+		public string Name
+		{
+			get
+			{
+				return name;
+			}
+			private set
+			{
+				name = value;
+			}
+		}
+
+		public int HP
+		{
+			get
+			{
+				return hp;
+			}
+			private set
+			{
+				hp = value;
+			}
+		}
+
+		public int Damage
+		{
+			get
+			{
+				return damage;
+			}
+			private set
+			{
+				damage = value;
+			}
+		}
+
+		public int Armor 
+		{
+			get
+			{
+				return armor; 
+			} 
+			private set 
+			{
+				armor = value;
+			} 
+		}
 
 		abstract public void ShowStats();
 
@@ -67,7 +128,7 @@ namespace BomjiDeruca
 
 		public void TakeHit(int damage)
 		{
-			if(damage > armor)
+			if (damage > armor)
 			{
 				hp = hp - damage + armor;
 			}
@@ -89,7 +150,7 @@ namespace BomjiDeruca
 
 		public override void DoHit(Fighter otherFighter)
 		{
-			if(otherFighter.HP < HP/3)
+			if (otherFighter.HP < HP/3)
 			{
 				SpecialSkill(otherFighter);
 			}
@@ -103,7 +164,7 @@ namespace BomjiDeruca
 		{
 			Console.WriteLine("Удар превосходства!");
 			Random random = new Random();
-			int RandomNumber = random.Next(1,4);
+			int RandomNumber = random.Next(1, 4);
 			otherFighter.TakeHit(Damage*RandomNumber);
 		}
 
@@ -272,9 +333,9 @@ namespace BomjiDeruca
 	class Pedestrian : Fighter
 	{
 		private List<string> _phrases = new List<string>(){
-			"Помогите!", "Я не должен быть здесь!", 
+			"Помогите!", "Я не должен быть здесь!",
 			"Мне рано умирать", "За что?", "Я просто мимо прохожу!",
-			"Не бей меня", "Только не это", 
+			"Не бей меня", "Только не это",
 		};
 
 		public Pedestrian(string name, int hp, int damage, int armor) : base(name, hp, damage, armor)
